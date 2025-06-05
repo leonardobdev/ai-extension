@@ -1,56 +1,60 @@
 # ai-extension
 
-Este repositório contém um projeto composto por duas partes principais:
+This repository contains a project made up of two main parts:
 
 1. **API**  
-   Implementada em [`api/index.js`](api/index.js), esta API cria um servidor HTTP que disponibiliza o endpoint `/api/generate` para processar requisições via método POST.  
-   A API pode ser iniciada através dos scripts:
-   - Pelo Node.js: `npm start` (conforme definido em [`api/package.json`](api/package.json))
-   - Pelo script do Windows: execute `start.bat`
-   - Pelo script do Unix/Linux: execute `start.sh`
+   Implemented in [`api/index.js`](api/index.js), this API spins up an HTTP server that exposes the `/api/generate` endpoint for processing POST requests.  
+   You can start the API with the following scripts:
+   - With Node.js: `npm start` (as defined in [`api/package.json`](api/package.json))
+   - On Windows: run `start.bat`
+   - On Unix/Linux: run `start.sh`
 
-2. **Extensão**  
-   A extensão é composta por:
-   - [`extension/content.js`](extension/content.js): injeta o script na página.
-   - [`extension/script.js`](extension/script.js): se comunica com a API para processar as perguntas.
-   - O manifesto [`extension/manifest.json`](extension/manifest.json) define as configurações necessárias para a extensão rodar nos navegadores compatíveis com Manifest V3.
+2. **Extension**  
+   The browser extension consists of:
+   - [`extension/content.js`](extension/content.js): injects the script into the page.
+   - [`extension/script.js`](extension/script.js): communicates with the API to handle queries.
+   - [`extension/manifest.json`](extension/manifest.json): Manifest V3 configuration required by compatible browsers.
 
-## Estrutura do Projeto
+## Project Structure
 
 ```bash
-ai-extension/  
-├── api/  
-│   ├── .gitignore  
-│   ├── index.js  
-│   ├── package.json  
-│   ├── start.bat  
-│   └── start.sh  
-├── extension/  
-│   ├── content.js  
-│   ├── manifest.json  
-│   └── script.js  
-├── LICENSE  
+ai-extension/
+├── api/
+│   ├── .gitignore
+│   ├── index.js
+│   ├── package.json
+│   ├── start.bat
+│   └── start.sh
+├── extension/
+│   ├── content.js
+│   ├── manifest.json
+│   └── script.js
+├── LICENSE
 └── README.md
 ```
 
-## Como Executar a API
+## How to Run the API
 
-1. Abra um terminal na pasta `api`.
+1. Open a terminal in the `api` folder.
 
-2. Inicie a API:
+2. Start the API:
 
 ```bash
 npm start
 ```
 
-A API ficará disponível em http://127.0.0.1:11435/ para lidar com as requisições feitas pela extensão.
-Como Utilizar a Extensão
-A extensão injeta o script definido em script.js nas páginas, permitindo:
+The API will be available at http://127.0.0.1:11435/ to handle requests sent from the extension.
 
-Capturar as solicitações dos usuários.
-Enviar requisições para a API para obter respostas.
-Atualizar o contexto da interação com base nas respostas recebidas.
-Para instalar a extensão, utilize as ferramentas de desenvolvimento do seu navegador e carregue a pasta extension como uma extensão sem empacotamento.
+## How to Use the Extension
 
-Licença
-Este projeto está licenciado sob a Licença MIT.
+The extension injects the script defined in `script.js` into pages, enabling it to:
+
+- Capture user requests.
+- Send requests to the API to fetch answers.
+- Update the interaction context based on the responses received.
+
+To install the extension, open your browser’s developer tools and load the `extension` folder as an unpacked extension.
+
+## License
+
+This project is licensed under the MIT License.
