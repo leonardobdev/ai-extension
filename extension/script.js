@@ -25,7 +25,7 @@ try {
             var minutes = date.getMinutes().toString().padStart(2, "0");
             var seconds = date.getSeconds().toString().padStart(2, "0");
             var datetime = `${year}/${month}/${day} ${hours}:${minutes}:${seconds}`;
-            var prompt = `${ai.context} system: ${datetime} | question: ${question} | answer: `;
+            var prompt = `${ai.context}system: ${datetime} | question: ${question} | answer: `;
             var body = ai.formatRequest(prompt);
             var url = `http://${ai.hostname}:${ai.port}${ai.path}`;
             var response = await fetch(url, {
@@ -37,8 +37,12 @@ try {
             if (data.response.includes("</think>")) {
                 data.response = data.response.split("</think>").at(-1);
             }
-            ai.context += `system: [${datetime}] | question: ${question} | answer: ${data.response} | `;
+            ai.context += `question: ${question} | answer: ${data.response} | `;
             return data.response;
+        },
+        clear: () => {
+            ai.context = "";
+            return "Cleared session context";
         },
     };
 } catch (error) {

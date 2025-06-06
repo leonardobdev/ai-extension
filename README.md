@@ -6,8 +6,6 @@ This repository contains a project made up of two main parts:
    Implemented in [`api/index.js`](api/index.js), this API spins up an HTTP server that exposes the `/api/generate` endpoint for processing POST requests.  
    You can start the API with the following scripts:
    - With Node.js: `npm start` (as defined in [`api/package.json`](api/package.json))
-   - On Windows: run `start.bat`
-   - On Unix/Linux: run `start.sh`
 
 2. **Extension**  
    The browser extension consists of:
@@ -22,9 +20,7 @@ ai-extension/
 ├── api/
 │   ├── .gitignore
 │   ├── index.js
-│   ├── package.json
-│   ├── start.bat
-│   └── start.sh
+│   └── package.json
 ├── extension/
 │   ├── content.js
 │   ├── manifest.json
