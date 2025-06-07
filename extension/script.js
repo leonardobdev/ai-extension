@@ -1,7 +1,8 @@
 try {
     var ai = {
         API_KEY: "",
-        model: "qwen3:4b",
+        model_prompt: "gemma3:1b",
+        model_reasoning: "qwen3:4b",
         hostname: "localhost",
         port: 11435,
         path: "/api/generate",
@@ -10,13 +11,24 @@ try {
             "Content-Type": "application/json"
         },
         context: "",
-        formatRequest: (prompt) => {
-            return JSON.stringify({ model: ai.model, prompt, stream: false });
+        formatRequest: (model, prompt) => {
+            return JSON.stringify({ model, prompt, stream: false });
         },
         formatResponse: (response) => {
             return JSON.parse(response).response;
         },
-        prompt: async (question) => {
+        prompt: async (prompt) => {
+            var body = ai.formatRequest(ai.model_prompt, prompt);
+            var url = `http://${ai.hostname}:${ai.port}${ai.path}`;
+            var response = await fetch(url, {
+                method: ai.method,
+                headers: ai.headers,
+                body,
+            });
+            var data = await response.json();
+            return data.response;
+        },
+        reasoning: async (question) => {
             var date = new Date();
             var year = date.getFullYear();
             var month = (date.getMonth() + 1).toString().padStart(2, "0");
@@ -26,7 +38,7 @@ try {
             var seconds = date.getSeconds().toString().padStart(2, "0");
             var datetime = `${year}/${month}/${day} ${hours}:${minutes}:${seconds}`;
             var prompt = `${ai.context}system: ${datetime} | question: ${question} | answer: `;
-            var body = ai.formatRequest(prompt);
+            var body = ai.formatRequest(ai.model_reasoning, prompt);
             var url = `http://${ai.hostname}:${ai.port}${ai.path}`;
             var response = await fetch(url, {
                 method: ai.method,
