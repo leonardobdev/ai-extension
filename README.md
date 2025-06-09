@@ -11,14 +11,12 @@ This repository contains a project made up of two main parts:
    The browser extension consists of:
    - [`extension/content.js`](extension/content.js): injects the script into the page.
    - [`extension/script.js`](extension/script.js): communicates with the API to handle queries.
-   - [`extension/manifest.json`](extension/manifest.json): Manifest V3 configuration required by compatible browsers.
 
 ## Project Structure
 
 ```bash
 ai-extension/
 ├── api/
-│   ├── .gitignore
 │   ├── index.js
 │   └── package.json
 ├── extension/
@@ -39,7 +37,7 @@ ai-extension/
 npm start
 ```
 
-The API will be available at http://127.0.0.1:11435/ to handle requests sent from the extension.
+The API will be available at <http://127.0.0.1:11435/> to handle requests sent from the extension.
 
 ## How to Use the Extension
 
