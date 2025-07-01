@@ -10,13 +10,17 @@ try {
             "Content-Type": "application/json"
         },
         context: "",
-        formatRequest: (model, prompt) => {
-            return JSON.stringify({ model, prompt, stream: false });
-        },
-        formatResponse: (response) => {
-            return JSON.parse(response).response;
-        },
-        prompt: async (question) => {
+        question: "",
+        answer: "",
+        system: `{datetime}`,
+        template: `
+        system: {system};
+        context: {context};
+        question: {question};
+        answer: 
+        `,
+        messages: [],
+        datetime: () => {
             var date = new Date();
             var year = date.getFullYear();
             var month = (date.getMonth() + 1).toString().padStart(2, "0");
@@ -25,7 +29,22 @@ try {
             var minutes = date.getMinutes().toString().padStart(2, "0");
             var seconds = date.getSeconds().toString().padStart(2, "0");
             var datetime = `${year}/${month}/${day} ${hours}:${minutes}:${seconds}`;
-            var prompt = `${ai.context}system: ${datetime} | question: ${question} | answer: `;
+            return datetime;
+        },
+        formatRequest: (model, prompt) => {
+            return JSON.stringify({ model, prompt, stream: false });
+        },
+        formatResponse: (response) => {
+            return JSON.parse(response).response;
+        },
+        prompt: async (question) => {
+            ai.question = question;
+            var prompt = ai.template
+                .replaceAll("{system}", ai.system)
+                .replaceAll("{context}", ai.context)
+                .replaceAll("{datetime}", ai.datetime())
+                .replaceAll("{question}", ai.question)
+                .replaceAll("{answer}", ai.answer);
             var body = ai.formatRequest(ai.model, prompt);
             var url = `http://${ai.hostname}:${ai.port}${ai.path}`;
             var response = await fetch(url, {
@@ -33,12 +52,16 @@ try {
                 headers: ai.headers,
                 body,
             });
-            var data = await response.json();
-            if (data.response.includes("</think>")) {
-                data.response = data.response.split("</think>").at(-1);
+            var answer = (await response.json()).response;
+            if (answer.includes("</think>")) {
+                answer = answer.split("</think>").at(-1);
             }
-            ai.context += `question: ${question} | answer: ${data.response} | `;
-            return data.response;
+            ai.answer = answer;
+            ai.messages.push({ question, answer });
+            ai.context = ai.messages.map(({ question, answer }) =>
+                `question: ${question} | answer: ${answer}`
+            ).join(" | ");
+            return answer;
         },
         clear: () => {
             ai.context = "";
