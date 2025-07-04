@@ -20,6 +20,7 @@ try {
         answer: 
         `,
         messages: [],
+        log: (e) => console.log(`%c[Interactor]`, 'color: #DC143C;', e),
         datetime: () => {
             var date = new Date();
             var year = date.getFullYear();
@@ -61,11 +62,12 @@ try {
             ai.context = ai.messages.map(({ question, answer }) =>
                 `question: ${question} | answer: ${answer}`
             ).join(" | ");
+            ai.log(answer);
             return answer;
         },
         clear: () => {
             ai.context = "";
-            return "Cleared session context";
+            ai.log("Cleared session context");
         },
     };
 } catch (err) {
