@@ -59,7 +59,7 @@ try {
                 .end("405", "utf-8");
         }
     });
-    server.listen(11435, hostname, () => console.log(`http://${hostname}:11435/`));
+    server.listen(11435, "127.0.0.1", () => console.log(`http://${hostname}:11435/`));
 } catch (err) {
     console.log(err);
 }
